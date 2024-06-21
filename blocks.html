@@ -13,7 +13,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
-  <title> GraphPlan </title>
+  <title> GraphPlan - Blocks </title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -90,43 +90,67 @@
       <div class="pddl_container">
         <pre>
 DOMÍNIO PDDL
+# Indica que o domínio é "blocks" e usa a semântica STRIPS.
 (define (domain blocks)
 (:requirements :strips)
-(:types block)
-(:predicates
-(on ?x ?y)
-(clear ?x)
+
+#Definição do tipo block
+(:types
+block
 )
+
+#Define dois predicados
+(:predicates
+(on ?x ?y) ; bloco x está em cima do bloco y
+(clear ?x) ; bloco x está livre (não tem nada em cima dele)
+)
+
+# Move um bloco b de from para to. Requer que b e to estejam livres e b esteja sobre from.
+Após o movimento, b está sobre to, to não está mais livre, from se torna livre, e b não está
+mais sobre from.
 (:action move
 :parameters (?b ?from ?to)
 :precondition (and (clear ?b) (clear ?to) (on ?b ?from))
 :effect (and (not (on ?b ?from)) (not (clear ?to)) (on ?b ?to) (clear ?from))
 )
+
+# Semelhante a move, mas não altera o estado de clear de to.
 (:action move-over
 :parameters (?b ?from ?to)
 :precondition (and (clear ?b) (clear ?to) (on ?b ?from))
 :effect (and (not (on ?b ?from)) (on ?b ?to) (clear ?from))
 )
+
+# Empilha um bloco b de from para to. Requer que b esteja livre e sobre from. Após o
+empilhamento, b está sobre to e não está mais sobre from.
 (:action pile
 :parameters (?b ?from ?to)
 :precondition (and (clear ?b) (on ?b ?from))
 :effect (and (not (on ?b ?from)) (on ?b ?to))
 )
+
+# Similar a pile, mas não remove o estado on anterior.
 (:action pile-over
 :parameters (?b ?from ?to)
 :precondition (and (clear ?b) (on ?b ?from))
 :effect (on ?b ?to)
 )
 )
+
         </pre>
         <pre>
 PROBLEMA PDDL
+# Define que o problema pertence ao domínio "blocks".
 (define (problem blocks_problem)
 (:domain blocks)
+
+# Define quatro objetos: três blocos (b1, b2, b3) e uma mesa (table).
 (:objects
 b1 b2 b3 - block
 table - block
 )
+
+# Define a configuração inicial.
 (:init
 (on b1 table)
 (on b2 b1)
@@ -135,6 +159,8 @@ table - block
 (clear b3)
 (clear table)
 )
+
+# Define o estado objetivo.
 (:goal
 (and
 (on b1 b2)

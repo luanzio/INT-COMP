@@ -13,7 +13,7 @@
   <meta name="author" content="" />
   <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
-  <title> GraphPlan</title>
+  <title> GraphPlan - Logistics</title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -92,26 +92,40 @@
 DOMÍNIO PDDL
 (define (domain logistics)
 (:requirements :strips)
+
+#Objetos do código
+;; Tipos
 (:types
 location
 package
 )
+
+#Caracteristicas do pacote
+;; Predicados
 (:predicates
 (at ?pkg - package ?loc - location)
 (available ?pkg - package)
 (in-transit ?pkg - package)
 (delivered ?pkg - package)
 )
+
+#Ações que podem ser realizadas e seus respectivos parametrosm, pré condições e efeitos
+;; Ações
 (:action load
 :parameters (?pkg - package ?loc - location)
 :precondition (and (at ?pkg ?loc) (available ?pkg))
 :effect (and (not (at ?pkg ?loc)) (in-transit ?pkg))
 )
+
+#Tira em transito e adiciona o pacote no local e entrega
 (:action unload
 :parameters (?pkg - package ?loc - location)
 :precondition (and (in-transit ?pkg) (at ?pkg ?loc))
 :effect (and (not (in-transit ?pkg)) (at ?pkg ?loc) (delivered ?pkg))
 )
+
+#Transporta o pacote de um local para outro local, verifica se o pacote está disponível e
+está no local, o pacote foi colocado no location to e adicionado transit pkg
 (:action transport
 :parameters (?pkg - package ?from - location ?to - location)
 :precondition (and (at ?pkg ?from) (available ?pkg))
@@ -123,16 +137,25 @@ package
 PROBLEMA PDDL
 (define (problem logistics_problem)
 (:domain logistics)
+
+#objetos p1 p2 pacotes, loc1 loc2 loc3 as localizações
+;; Objetos
 (:objects
 p1 p2 - package
 loc1 loc2 loc3 - location
 )
+
+#o p1 está na loc1 e o p2 em loc2, ambos disponíveis
+;; Estado inicial
 (:init
 (at p1 loc1)
 (at p2 loc2)
 (available p1)
 (available p2)
 )
+
+#o objetivo é entregar ambos os pacotes
+;; Objetivo
 (:goal
 (and
 (delivered p1)
@@ -140,6 +163,7 @@ loc1 loc2 loc3 - location
 )
 )
 )
+
         </pre>
         <pre>
 PARA RODAR O CÓDIGO CHAME NO TERMINAL
