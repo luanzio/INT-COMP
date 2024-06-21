@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="finance, investment, trading, secure investment" />
+  <meta name="description" content="GraphPlan offers expert management, secure investment, and instant trading solutions." />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="image/png">
+
+  <title> GraphPlan </title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+
+</head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+
+    <div class="hero_bg_box">
+      <div class="bg_img_box">
+        <img src="images/hero-bg.png" alt="Hero background image">
+      </div>
+    </div>
+
+    <!-- header section starts -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              GraphPlan
+            </span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  ">
+              <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#about"> Sobre</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#examples">Implementações</a>
+              </li>
+
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+
+  <!-- PDDL Example section -->
+  <section class="pddl_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Problema Blocks com <span>Pyperplan</span>
+        </h2>
+      </div>
+      <div class="pddl_container">
+        <pre>
+DOMÍNIO PDDL
+(define (domain blocks)
+(:requirements :strips)
+(:types block)
+(:predicates
+(on ?x ?y)
+(clear ?x)
+)
+(:action move
+:parameters (?b ?from ?to)
+:precondition (and (clear ?b) (clear ?to) (on ?b ?from))
+:effect (and (not (on ?b ?from)) (not (clear ?to)) (on ?b ?to) (clear ?from))
+)
+(:action move-over
+:parameters (?b ?from ?to)
+:precondition (and (clear ?b) (clear ?to) (on ?b ?from))
+:effect (and (not (on ?b ?from)) (on ?b ?to) (clear ?from))
+)
+(:action pile
+:parameters (?b ?from ?to)
+:precondition (and (clear ?b) (on ?b ?from))
+:effect (and (not (on ?b ?from)) (on ?b ?to))
+)
+(:action pile-over
+:parameters (?b ?from ?to)
+:precondition (and (clear ?b) (on ?b ?from))
+:effect (on ?b ?to)
+)
+)
+        </pre>
+        <pre>
+PROBLEMA PDDL
+(define (problem blocks_problem)
+(:domain blocks)
+(:objects
+b1 b2 b3 - block
+table - block
+)
+(:init
+(on b1 table)
+(on b2 b1)
+(on b3 table)
+(clear b2)
+(clear b3)
+(clear table)
+)
+(:goal
+(and
+(on b1 b2)
+(on b3 b1)
+)
+)
+)
+        </pre>
+        <pre>
+PARA RODAR O CÓDIGO CHAME NO TERMINAL
+pyperplan blocks_domain.pddl blocks_problem.pddl
+
+SAÍDA PARA O PROBLEMA
+(move b2 b1 table)
+(move b1 table b2)
+(move b3 table b1)
+        </pre>
+      </div>
+    </div>
+  </section>
+  <!-- end PDDL Example section -->
+
+  <!-- info section -->
+
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <section class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayYear"></span> Criado por Erick, Luan, Murilo e Pedro
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+  <!-- bootstrap js -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- owl slider -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <!-- custom js -->
+  <script type="text/javascript" src="js/custom.js"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap" async defer></script>
+</body>
+
+</html>
