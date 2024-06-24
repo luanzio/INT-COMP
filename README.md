@@ -1,1 +1,1 @@
-Trabalho referente à disciplina de Inteligência Computacional sobre o Algoritmo Graphplan
+WebPage referente à disciplina de Inteligência Computacional sobre o Algoritmo Graphplan
